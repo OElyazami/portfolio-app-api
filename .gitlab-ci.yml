@@ -2,25 +2,69 @@ stages:
   - release
 
 variables:
+  # CRITICAL: Disable shallow clone
+  GIT_DEPTH: 0
+  # Use clone strategy
+  GIT_STRATEGY: clone
   APP_ENV: prod
   SYMFONY_ENV: prod
   COMPOSER_ALLOW_SUPERUSER: "1"
 
-
-# =========================
-# 2️⃣ SEMANTIC RELEASE (ONLY dev)
-# =========================
 semantic_release:
   stage: release
   image: node:22
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
+      when: always  # Run even on protected branch
   variables:
-      GITLAB_TOKEN: $GL_TOKEN
-  script:
-    - echo "GITLAB_TOKEN length=${GITLAB_TOKEN}"
+    GITLAB_TOKEN: $GL_TOKEN
+  before_script:
+    # Configure Git
     - git config --global user.email "ci@gitlab.com"
     - git config --global user.name "GitLab CI"
+    # Update remote with token
     - git remote set-url origin "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${CI_PROJECT_PATH}.git"
+    # CRITICAL: Fetch ALL branches and tags
+    - git fetch --all --tags --prune
+    # Debug: Show what we fetched
+    - echo "=== GIT STATE ==="
+    - echo "Current branch: $(git branch --show-current)"
+    - echo "All branches:"
+    - git branch -a
+    - echo "All tags:"
+    - git tag -l || echo "No tags found"
+    - echo "=== END DEBUG ==="
+  script:
+    - echo "GITLAB_TOKEN exists: ${GITLAB_TOKEN:+yes}"
+    # Install dependencies (including dev deps for semantic-release)
     - npm ci
-    - npx semantic-release
+    # Run semantic-release with debug info
+    - npx semantic-release --debug --no-ci
+
+debug_semantic:
+  stage: release
+  image: node:22
+  script:
+    - |
+      echo "=== SEMANTIC-RELEASE DEBUG ==="
+      
+      echo "1. Git state:"
+      git branch -a
+      git tag -l
+      git log --oneline -5
+      
+      echo "2. Dependencies:"
+      npm list semantic-release 2>/dev/null || echo "Not installed"
+      
+      echo "3. Configuration:"
+      cat .releaserc || echo "No .releaserc file"
+      
+      echo "4. Package.json:"
+      cat package.json | grep -A2 -B2 version
+      
+      echo "5. Try dry run:"
+      npx semantic-release --dry-run --no-ci 2>&1 | tail -20 || true
+      
+      echo "=== END DEBUG ==="
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
