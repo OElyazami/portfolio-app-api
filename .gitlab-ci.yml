@@ -12,8 +12,6 @@ variables:
 semantic_release:
   stage: release
   image: node:22
-  resource_group: semantic_release_group
-  interruptible: true
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
       when: always
@@ -23,12 +21,17 @@ semantic_release:
     - git config --global user.email "ci@gitlab.com"
     - git config --global user.name "GitLab CI"
     - git remote set-url origin "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${CI_PROJECT_PATH}.git"
-    - git fetch --all --tags --prune
-    # CRITICAL: Reset local dev branch to match remote
-    - git checkout $CI_COMMIT_BRANCH
-    - git reset --hard origin/$CI_COMMIT_BRANCH
+    - git checkout dev
+    - git pull origin dev
   script:
-    - npm ci
+    # Generate package-lock.json if missing
+    - if [ ! -f "package-lock.json" ]; then
+        echo "package-lock.json missing, generating..."
+        npm install
+      else
+        echo "package-lock.json exists, using npm ci..."
+        npm ci
+      fi
     - npx semantic-release --debug --no-ci
 
 debug_semantic_release:
