@@ -14,7 +14,7 @@ semantic_release:
   stage: release
   image: node:22
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "dev"
   variables:
       GITLAB_TOKEN: $GL_TOKEN
   script:
