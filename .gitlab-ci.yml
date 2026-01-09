@@ -8,9 +8,12 @@ variables:
   SYMFONY_ENV: prod
   COMPOSER_ALLOW_SUPERUSER: "1"
 
+
 semantic_release:
   stage: release
   image: node:22
+  resource_group: semantic_release_group
+  interruptible: true
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
       when: always
