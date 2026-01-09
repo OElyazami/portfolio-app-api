@@ -2,34 +2,25 @@ stages:
   - release
 
 variables:
-  # CRITICAL: Disable shallow clone
   GIT_DEPTH: 0
-  # Use clone strategy
   GIT_STRATEGY: clone
   APP_ENV: prod
   SYMFONY_ENV: prod
   COMPOSER_ALLOW_SUPERUSER: "1"
 
-# =========================
-# SEMANTIC RELEASE (ONLY dev)
-# =========================
 semantic_release:
   stage: release
   image: node:22
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
-      when: always  # Run even on protected branch
+      when: always
   variables:
     GITLAB_TOKEN: $GITLAB_TOKEN
   before_script:
-    # Configure Git
     - git config --global user.email "ci@gitlab.com"
     - git config --global user.name "GitLab CI"
-    # Update remote with token
     - git remote set-url origin "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${CI_PROJECT_PATH}.git"
-    # CRITICAL: Fetch ALL branches and tags
     - git fetch --all --tags --prune
-    # Debug: Show what we fetched
     - echo "=== GIT STATE ==="
     - echo "Current branch: $(git branch --show-current)"
     - echo "All branches:"
@@ -39,7 +30,5 @@ semantic_release:
     - echo "=== END DEBUG ==="
   script:
     - echo "GITLAB_TOKEN exists: ${GITLAB_TOKEN:+yes}"
-    # Install dependencies (including dev deps for semantic-release)
     - npm ci
-    # Run semantic-release with debug info
     - npx semantic-release --debug --no-ci
