@@ -14,9 +14,6 @@ semantic_release:
     # CRITICAL: Reset local dev branch to match remote
     - git checkout $CI_COMMIT_BRANCH
     - git reset --hard origin/$CI_COMMIT_BRANCH
-    # Debug
-    - echo "Local HEAD: $(git rev-parse HEAD)"
-    - echo "Remote HEAD: $(git rev-parse origin/$CI_COMMIT_BRANCH)"
   script:
     - npm ci
     - npx semantic-release --debug --no-ci
