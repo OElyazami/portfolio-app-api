@@ -7,5 +7,16 @@
 # To list all registered routes, run the following command:
 #   bin/console debug:router
 
-controllers:
-    resource: routing.controllers
+api_controllers:
+    resource:
+        path: ../src/Controller/Api
+        namespace: App\Controller\Api
+        
+    type: attribute  # This is the key line!
+    prefix: /v1/api
+    name_prefix: 'api_'
+
+auth_controllers:
+    resource: '../src/Controller/AuthController.php'
+    type: attribute
+    name_prefix: 'auth_'
