@@ -1,3 +1,13 @@
+stages:
+  - release
+
+variables:
+  GIT_DEPTH: 0
+  GIT_STRATEGY: clone
+  APP_ENV: prod
+  SYMFONY_ENV: prod
+  COMPOSER_ALLOW_SUPERUSER: "1"
+
 semantic_release:
   stage: release
   image: node:22
