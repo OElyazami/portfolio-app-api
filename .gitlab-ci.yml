@@ -20,7 +20,7 @@ semantic_release:
     - if: $CI_COMMIT_BRANCH == "dev"
       when: always  # Run even on protected branch
   variables:
-    GITLAB_TOKEN: $GL_TOKEN
+    GITLAB_TOKEN: $GITLAB_TOKEN
   before_script:
     # Configure Git
     - git config --global user.email "ci@gitlab.com"
@@ -43,35 +43,3 @@ semantic_release:
     - npm ci
     # Run semantic-release with debug info
     - npx semantic-release --debug --no-ci
-
-# =========================
-# DEBUG JOB
-# =========================
-debug_semantic:
-  stage: release
-  image: node:22
-  rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
-  script:
-    # Multi-line script must use proper YAML block scalar
-    - |
-      echo "=== SEMANTIC-RELEASE DEBUG ==="
-      echo ""
-      echo "1. Git state:"
-      git branch -a
-      git tag -l
-      git log --oneline -5
-      echo ""
-      echo "2. Dependencies:"
-      npm list semantic-release 2>/dev/null || echo "Not installed"
-      echo ""
-      echo "3. Configuration:"
-      cat .releaserc 2>/dev/null || echo "No .releaserc file"
-      echo ""
-      echo "4. Package.json:"
-      cat package.json | grep -A2 -B2 version || echo "Cannot read package.json"
-      echo ""
-      echo "5. Try dry run:"
-      npx semantic-release --dry-run --no-ci 2>&1 | tail -20 || echo "Dry run failed"
-      echo ""
-      echo "=== END DEBUG ==="
