@@ -27,45 +27,45 @@ semantic_release:
     - npm install
     - npx semantic-release --debug --no-ci
 
-debug_semantic_release:
-  stage: release
-  image: node:22
-  script:
-    - |
-      echo "=== COMPREHENSIVE DEBUG ==="
-      echo ""
+# debug_semantic_release:
+#   stage: release
+#   image: node:22
+#   script:
+#     - |
+#       echo "=== COMPREHENSIVE DEBUG ==="
+#       echo ""
       
-      # 1. Check Git state
-      echo "1. GIT STATE:"
-      git status
-      echo ""
-      echo "Branches:"
-      git branch -a
-      echo ""
-      echo "Tags:"
-      git tag -l
-      echo ""
-      echo "Latest commits:"
-      git log --oneline -5
-      echo ""
+#       # 1. Check Git state
+#       echo "1. GIT STATE:"
+#       git status
+#       echo ""
+#       echo "Branches:"
+#       git branch -a
+#       echo ""
+#       echo "Tags:"
+#       git tag -l
+#       echo ""
+#       echo "Latest commits:"
+#       git log --oneline -5
+#       echo ""
       
-      # 2. Check package.json
-      echo "2. PACKAGE.JSON:"
-      cat package.json
-      echo ""
+#       # 2. Check package.json
+#       echo "2. PACKAGE.JSON:"
+#       cat package.json
+#       echo ""
       
-      # 3. Check .releaserc
-      echo "3. .RELEASERC:"
-      cat .releaserc
-      echo ""
+#       # 3. Check .releaserc
+#       echo "3. .RELEASERC:"
+#       cat .releaserc
+#       echo ""
       
-      # 4. Check npm packages
-      echo "4. NPM PACKAGES:"
-      npm list --depth=0 2>/dev/null || echo "npm list failed"
-      echo ""
+#       # 4. Check npm packages
+#       echo "4. NPM PACKAGES:"
+#       npm list --depth=0 2>/dev/null || echo "npm list failed"
+#       echo ""
       
-      # 5. Try semantic-release with maximum debug
-      echo "5. SEMANTIC-RELEASE DRY RUN:"
-      npx semantic-release --dry-run --no-ci --debug 2>&1 | tail -100 || echo "Dry run failed"
-  rules:
-    - when: manual
+#       # 5. Try semantic-release with maximum debug
+#       echo "5. SEMANTIC-RELEASE DRY RUN:"
+#       npx semantic-release --dry-run --no-ci --debug 2>&1 | tail -100 || echo "Dry run failed"
+#   rules:
+#     - when: manual
