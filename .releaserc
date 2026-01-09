@@ -1,21 +1,35 @@
 {
-  "branches": ["dev"],
+  "branches": [
+    "master",
+    {
+      "name": "dev",
+      "prerelease": "beta"
+    }
+  ],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     [
       "@semantic-release/changelog",
-      { "changelogFile": "CHANGELOG.md" }
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
     ],
     [
       "@semantic-release/npm",
-      { "npmPublish": false }
+      {
+        "npmPublish": false
+      }
     ],
     "@semantic-release/gitlab",
     [
       "@semantic-release/git",
       {
-        "assets": ["CHANGELOG.md", "package.json", "package-lock.json"],
+        "assets": [
+          "CHANGELOG.md",
+          "package.json",
+          "package-lock.json"
+        ],
         "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
       }
     ]
