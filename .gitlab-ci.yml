@@ -8,7 +8,7 @@ variables:
 
 
 # =========================
-# 2️⃣ SEMANTIC RELEASE (ONLY main)
+# 2️⃣ SEMANTIC RELEASE (ONLY dev)
 # =========================
 semantic_release:
   stage: release
