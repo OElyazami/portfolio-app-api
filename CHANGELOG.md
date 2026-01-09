@@ -1,0 +1,22 @@
+## [1.0.1](https://gitlab.com/deep-commit/portfolio_admin_panel/compare/v1.0.0...v1.0.1) (2026-01-09)
+
+
+### Bug Fixes
+
+* add job for debug ([3ac24f5](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/3ac24f5e24a34e3f0858bd71f717b8c125db466e))
+* another fix ([d4b9636](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/d4b96369d6971c5d6bd8d6e114151dd4ad65bb3c))
+* another fix ([f04444f](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/f04444f51717d87ccd1d1660b179094b041c208f))
+* another fix ([680622b](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/680622b7b246b1100c9a70f1c7dfedeb4621d86a))
+* another fix ([42bdd3d](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/42bdd3d2fabca06136341f97580e038739eed6d1))
+* another fix ([63302fa](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/63302fa69106bc0eb50e99ccb57ec091aeed6c00))
+* another fix ([cb7000b](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/cb7000b06bbf46f8cbdbf692f84dc7625bdc6997))
+* another fix ([4d2c51e](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/4d2c51e015e272346b55ad44b85d4720f5d92b31))
+* another fix ([f800585](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/f8005852a705684ffa2a5615a59167550bdfecdc))
+* another fix ([9752c56](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/9752c566f1450e84f15262502c2dd2ddd5c73d44))
+* another fix ([cd84c99](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/cd84c9985be686256a8eb4334cdfe7cdc7183dbb))
+* fix ([9496295](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/9496295d48be2dec93f9a89060f6f6af89904c27))
+* fix ([10d160e](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/10d160e330722ff4b307fa9766c4b93dd21acb80))
+* fix ([f272b3d](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/f272b3d98f50960a3ab230d056bf1bc8fcb6f310))
+* fix ([2a5957e](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/2a5957e2ee6cfc1c5446b63dbe7157802258e8d3))
+* fix package.json ([7379659](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/7379659dc2d7150d3eb809230b4ebd4be08ee823))
+* initial configuration ([f77637a](https://gitlab.com/deep-commit/portfolio_admin_panel/commit/f77637a84266cd2aa1438fb5c905579e33b268bd))

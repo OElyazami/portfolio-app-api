@@ -1,7 +1,7 @@
 {
-  "name": "portfolio-admin-app", 
-  "version": "1.0.0",
-  "private": true, 
+  "name": "portfolio-admin-app",
+  "version": "1.0.1",
+  "private": true,
   "description": "Portfolio Admin Panel",
   "main": "index.js",
   "scripts": {
