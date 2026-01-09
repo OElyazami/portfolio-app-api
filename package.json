@@ -1,4 +1,28 @@
 {
+  "name": "portfolio-admin-app", 
+  "version": "1.0.0",
+  "private": true, 
+  "description": "Portfolio Admin Panel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/deep-commit/portfolio_admin_panel.git"
+  },
+  "keywords": [
+    "symfony",
+    "admin",
+    "portfolio"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/deep-commit/portfolio_admin_panel/issues"
+  },
+  "homepage": "https://gitlab.com/deep-commit/portfolio_admin_panel#readme",
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
