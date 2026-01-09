@@ -24,14 +24,7 @@ semantic_release:
     - git pull origin dev
   script:
     # Use pipe for multi-line script
-    - |
-      if [ ! -f "package-lock.json" ]; then
-        echo "package-lock.json missing, generating..."
-        npm install
-      else
-        echo "package-lock.json exists, using npm ci..."
-        npm ci
-      fi
+    - npm install
     - npx semantic-release --debug --no-ci
 
 debug_semantic_release:
