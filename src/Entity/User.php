@@ -71,12 +71,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private Collection $skills;
 
+    #[ORM\OneToMany(
+        targetEntity: Company::class,
+        mappedBy: 'user',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $companies;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private ?UserDetails $userDetails;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->roles = ['ROLE_USER'];
         $this->projects = new ArrayCollection();
         $this->skills = new ArrayCollection();
+        $this->companies = new ArrayCollection();
     }
 
     #[ORM\PreUpdate]
@@ -192,7 +204,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function addProject(Project $project): self
     {
-        if (!$this->projects->contains($project)){
+        if (!$this->projects->contains($project)) {
             $this->projects->add($project);
             $project->setUser($this);
         }
@@ -202,10 +214,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeProject(Project $project): self
     {
-        if ($this->projects->contains($project)){
+        if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
 
-            if ($project->getUser() == $this){
+            if ($project->getUser() == $this) {
                 $project->setUser(null);
             }
         }
@@ -224,7 +236,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addCertification(Certification $certification): self
     {
-        if (!$this->certifications->contains($certification)){
+        if (!$this->certifications->contains($certification)) {
             $this->certifications->add($certification);
             $certification->setUser($this);
         }
@@ -233,9 +245,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeCertification(Certification $certification): self
     {
-        if ($this->certifications->contains($certification)){
+        if ($this->certifications->contains($certification)) {
             $this->certifications->removeElement($certification);
-            if ($certification->getUser() == $this){
+            if ($certification->getUser() == $this) {
                 $certification->setUser(null);
             }
         }
@@ -249,7 +261,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addSkill(Skill $skill): self
     {
-        if (!$this->skills->contains($skill)){
+        if (!$this->skills->contains($skill)) {
             $this->skills->add($skill);
             $skill->setUser($this);
         }
@@ -258,12 +270,64 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeskill(Skill $skill): self
     {
-        if ($this->skills->contains($skill)){
+        if ($this->skills->contains($skill)) {
             $this->skills->removeElement($skill);
-            if ($skill->getUser() == $this){
+            if ($skill->getUser() == $this) {
                 $skill->setUser(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * Get the value of companies
+     *
+     * @return Collection
+     */
+    public function getCompanies(): Collection
+    {
+        return $this->companies;
+    }
+
+    public function addCompany(Company $company): self
+    {
+        if (!$this->companies->contains($company)) {
+            $this->companies->add($company);
+            $company->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeCompany(Company $company): self
+    {
+        if ($this->companies->contains($company)) {
+            $this->companies->removeElement($company);
+            $company->setUser(null);
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of userDetails
+     *
+     * @return ?UserDetails
+     */
+    public function getUserDetails(): ?UserDetails
+    {
+        return $this->userDetails;
+    }
+
+    /**
+     * Set the value of userDetails
+     *
+     * @param ?UserDetails $userDetails
+     *
+     * @return self
+     */
+    public function setUserDetails(?UserDetails $userDetails): self
+    {
+        $this->userDetails = $userDetails;
+
         return $this;
     }
 }

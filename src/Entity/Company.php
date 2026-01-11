@@ -39,6 +39,12 @@ class Company
     )]
     private ?string $logoImage;
 
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        inversedBy: 'companies'
+    )]
+    private ?User $user;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -153,6 +159,30 @@ class Company
     public function setLogoImage(?string $logoImage): self
     {
         $this->logoImage = $logoImage;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     *
+     * @return ?User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @param ?User $user
+     *
+     * @return self
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
