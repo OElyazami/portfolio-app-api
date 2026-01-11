@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,7 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     #[Assert\Email]
     #[Assert\Length(max: 180)]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column]
     private array $roles = [];
@@ -45,10 +47,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(
+        targetEntity: Project::class,
+        mappedBy: 'user',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $projects;
+
+    #[ORM\OneToMany(
+        targetEntity: Certification::class,
+        mappedBy: 'user',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $certifications;
+
+    #[ORM\OneToMany(
+        targetEntity: Skill::class,
+        mappedBy: 'user',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $skills;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->roles = ['ROLE_USER'];
+        $this->projects = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     #[ORM\PreUpdate]
@@ -62,7 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -143,5 +171,99 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
+    }
+
+    /**
+     * Get the value of projects
+     *
+     * @return Collection
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    /**
+     * add project
+     *
+     * @param Project $projectss
+     *
+     * @return self
+     */
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)){
+            $this->projects->add($project);
+            $project->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->contains($project)){
+            $this->projects->removeElement($project);
+
+            if ($project->getUser() == $this){
+                $project->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Get the value of certifications
+     *
+     * @return Collection
+     */
+    public function getCertifications(): Collection
+    {
+        return $this->certifications;
+    }
+
+    public function addCertification(Certification $certification): self
+    {
+        if (!$this->certifications->contains($certification)){
+            $this->certifications->add($certification);
+            $certification->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeCertification(Certification $certification): self
+    {
+        if ($this->certifications->contains($certification)){
+            $this->certifications->removeElement($certification);
+            if ($certification->getUser() == $this){
+                $certification->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skill $skill): self
+    {
+        if (!$this->skills->contains($skill)){
+            $this->skills->add($skill);
+            $skill->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeskill(Skill $skill): self
+    {
+        if ($this->skills->contains($skill)){
+            $this->skills->removeElement($skill);
+            if ($skill->getUser() == $this){
+                $skill->setUser(null);
+            }
+        }
+        return $this;
     }
 }

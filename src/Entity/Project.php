@@ -3,15 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\SkillRepository;
-use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity(repositoryClass: SkillRepository::class)]
+#[ORM\Entity]
 #[ORM\Table(name: 'projects')]
-class Project {
+class Project
+{
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,11 +30,14 @@ class Project {
     #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
-    #[ORM\Column()]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        max: 255
+    )]
     private ?string $featuredImage;
 
     #[ORM\Column()]
-    private DateTime $years;
+    private int $years;
 
     #[ORM\Column()]
     private bool $isFeatured;
@@ -41,10 +45,47 @@ class Project {
     #[ORM\ManyToMany(
         targetEntity: Category::class,
         mappedBy: 'projects',
-        cascade:['persist']
+        cascade: ['persist']
     )]
     private Collection $categories;
 
+    #[ORM\ManyToOne(
+        targetEntity: Company::class,
+        inversedBy: 'projects',
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Company $company = null;
+
+    #[ORM\ManyToOne(
+        targetEntity: Client::class,
+        inversedBy: 'projects',
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Client $client;
+
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        inversedBy: 'projects'
+    )]
+    #[ORM\JoinColumn(
+        onDelete: 'CASCADE'
+    )]
+    private ?User $user;
+
+    #[ORM\ManyToMany(
+        targetEntity: Skill::class,
+        mappedBy: 'projects',
+        cascade: ['persist']
+    )]
+    private Collection $skills; 
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->skills = new ArrayCollection();
+    }
 
     /**
      * Get the value of id
@@ -54,20 +95,6 @@ class Project {
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * Set the value of id
-     *
-     * @param ?int $id
-     *
-     * @return self
-     */
-    public function setId(?int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -120,7 +147,7 @@ class Project {
 
     /**
      * Get the value of description
-     */ 
+     */
     public function getDescription()
     {
         return $this->description;
@@ -130,7 +157,7 @@ class Project {
      * Set the value of description
      *
      * @return  self
-     */ 
+     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -164,7 +191,7 @@ class Project {
 
     /**
      * Get the value of years
-     */ 
+     */
     public function getYears()
     {
         return $this->years;
@@ -174,7 +201,7 @@ class Project {
      * Set the value of years
      *
      * @return  self
-     */ 
+     */
     public function setYears($years)
     {
         $this->years = $years;
@@ -213,7 +240,7 @@ class Project {
 
     public function addCategory(Category $category): self
     {
-        if (!$this->categories->contains($category)){
+        if (!$this->categories->contains($category)) {
             $this->categories->add($category);
             $category->addProject($this);
         }
@@ -222,10 +249,112 @@ class Project {
 
     public function removeCategory(Category $category): self
     {
-        if ($this->categories->contains($category)){
+        if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
             $category->removeProject($this);
         }
+        return $this;
+    }
+
+    /**
+     * Get the value of company
+     *
+     * @return ?Company
+     */
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set the value of company
+     *
+     * @param ?Company $company
+     *
+     * @return self
+     */
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of client
+     *
+     * @return ?Client
+     */
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set the value of client
+     *
+     * @param ?Client $client
+     *
+     * @return self
+     */
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     *
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @param User $user
+     *
+     * @return self
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of skill
+     *
+     * @return Skill
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skill $skill): self
+    {
+        if (!$this->skills->contains($skill)){
+            $this->skills->add($$skill);
+            $skill->addProject($this);
+        }
+
+        return$this;
+    }
+
+    public function removeSkill(Skill $skill): self
+    {
+        if ($this->skills->contains($skill)){
+            $this->skills->removeElement($skill);
+            $skill->removeProject($this);
+        }
+
         return $this;
     }
 }
