@@ -2,10 +2,13 @@
 
 namespace App\Controller\Api;
 
+use App\Dto\User\Input\UpdateUserDto;
+use App\Dto\User\Output\UserDetailsDto;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
@@ -28,9 +31,12 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/update', name: 'update', methods: ['PUT'])]
-    public function update(#[CurrentUser] $user, UserService $userService): JsonResponse
-    {
-        $userDetails = $userService->updateUser($user);
-        return $this->json($userDetails, Response::HTTP_OK);
+    public function update(
+        #[CurrentUser] $user,
+        #[MapRequestPayload] UpdateUserDto $userDto,
+        UserService $userService
+    ): JsonResponse {
+        $user = $userService->updateUser($userDto, $user);
+        return $this->json(UserDetailsDto::fromEntity($user), Response::HTTP_OK);
     }
 }

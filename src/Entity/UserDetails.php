@@ -40,6 +40,10 @@ class UserDetails
     #[ORM\Column(nullable: true)]
     private ?string $githubUrl;
 
+    #[ORM\Column(nullable: true)]
+    #[Assert\Email]
+    private ?string $email;
+
     /**
      * Get the value of address
      *
@@ -212,5 +216,29 @@ class UserDetails
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * Get the value of email
+     *
+     * @return ?string
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set the value of email
+     *
+     * @param ?string $email
+     *
+     * @return self
+     */
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }
