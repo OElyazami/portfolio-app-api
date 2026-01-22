@@ -43,4 +43,19 @@ class UserDetailsDto implements DtoInterface
             landLineNumber: $userDetails->getLandLineNumber()
         );
     }
+
+     public function toArray(): array
+    {
+        return [
+            'linkedinUrl' => $this->linkedinUrl,
+            'githubUrl' => $this->githubUrl,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'profile' => $this->profile,
+            'email' => $this->email,
+            'address' => $this->address,
+            'mobileNumber' => $this->mobileNumber,
+            'landLineNumber' => $this->landLineNumber,
+        ];
+    }
 }

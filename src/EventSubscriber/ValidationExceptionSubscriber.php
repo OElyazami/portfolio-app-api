@@ -2,8 +2,10 @@
 
 namespace App\EventSubscriber;
 
+use App\Response\ErrorResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -11,11 +13,13 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 class ValidationExceptionSubscriber implements EventSubscriberInterface
 {
+    const VALIDATION_FAILED_MESSAGE = 'VALIDATION_FAILED';
+    const CODE = Response::HTTP_UNPROCESSABLE_ENTITY;
 
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::EXCEPTION => 'onKernelException'
+            KernelEvents::EXCEPTION => ['onKernelException', 100]
         ];
     }
 
@@ -28,12 +32,14 @@ class ValidationExceptionSubscriber implements EventSubscriberInterface
             if ($previous instanceof ValidationFailedException) {
                 $response = $this->createValidationErrorResponse($previous);
                 $event->setResponse($response);
+                $event->stopPropagation();
             }
         }
 
         if ($exception instanceof ValidationFailedException) {
             $response = $this->createValidationErrorResponse($exception);
             $event->setResponse($response);
+            $event->stopPropagation();
         }
     }
 
@@ -52,12 +58,12 @@ class ValidationExceptionSubscriber implements EventSubscriberInterface
             ];
         }
 
-        return new JsonResponse([
-            'status' => 'error',
-            'code' => 422,
-            'message' => 'Validation failed',
-            'errors' => $errors,
-            'timestamp' => (new \DateTime())->format('c'),
-        ], 422);
+        return new JsonResponse(
+            (new ErrorResponse())
+                ->setMessage(self::VALIDATION_FAILED_MESSAGE)
+                ->setErrors($errors)
+                ->setCode(self::CODE)
+                ->getArrayFormat()
+        );
     }
 }

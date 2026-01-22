@@ -29,6 +29,9 @@ class Project
     #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
+    #[ORM\Column(type: 'text')]
+    private ?string $shortDescription = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(
         max: 255
@@ -327,11 +330,6 @@ class Project
         return $this;
     }
 
-    /**
-     * Get the value of skill
-     *
-     * @return Skill
-     */
     public function getSkills(): Collection
     {
         return $this->skills;
@@ -353,6 +351,30 @@ class Project
             $this->skills->removeElement($skill);
             $skill->removeProject($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of shortDescription
+     *
+     * @return ?string
+     */
+    public function getShortDescription(): ?string
+    {
+        return $this->shortDescription;
+    }
+
+    /**
+     * Set the value of shortDescription
+     *
+     * @param ?string $shortDescription
+     *
+     * @return self
+     */
+    public function setShortDescription(?string $shortDescription): self
+    {
+        $this->shortDescription = $shortDescription;
 
         return $this;
     }

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Dto\Project\CreateProjectDto;
+use App\Dto\Project\Input\CreateProjectDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
