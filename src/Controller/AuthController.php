@@ -34,6 +34,20 @@ class AuthController extends AbstractController
 
         // Validate input
         $constraints = new Assert\Collection([
+            'firstName' => [
+                new Assert\NotBlank(['message' => 'First name is required']),
+                new Assert\Length([
+                    'max' => 100,
+                    'maxMessage' => 'First name cannot be longer than {{ limit }} characters'
+                ])
+            ],
+            'lastName' => [
+                new Assert\NotBlank(['message' => 'Last name is required']),
+                new Assert\Length([
+                    'max' => 100,
+                    'maxMessage' => 'Last name cannot be longer than {{ limit }} characters'
+                ])
+            ],
             'email' => [
                 new Assert\NotBlank(['message' => 'Email is required']),
                 new Assert\Email(['message' => 'Invalid email format']),
@@ -72,6 +86,8 @@ class AuthController extends AbstractController
 
         // Create user
         $user = new User();
+        $user->setFirstName($data['firstName']);
+        $user->setLastName($data['lastName']);
         $user->setEmail($data['email']);
         $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
 
@@ -98,6 +114,8 @@ class AuthController extends AbstractController
             'message' => 'User registered successfully',
             'user' => [
                 'id' => $user->getId(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
                 'email' => $user->getEmail(),
                 'roles' => $user->getRoles(),
             ]
@@ -119,6 +137,8 @@ class AuthController extends AbstractController
         return new JsonResponse([
             'user' => [
                 'id' => $user->getId(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
                 'email' => $user->getEmail(),
                 'roles' => $user->getRoles(),
             ]

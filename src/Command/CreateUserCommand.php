@@ -28,6 +28,8 @@ class CreateUserCommand extends Command
     protected function configure(): void
     {
         $this
+            ->addArgument('firstName', InputArgument::REQUIRED, 'User first name')
+            ->addArgument('lastName', InputArgument::REQUIRED, 'User last name')
             ->addArgument('email', InputArgument::REQUIRED, 'User email')
             ->addArgument('password', InputArgument::REQUIRED, 'User password');
     }
@@ -36,10 +38,14 @@ class CreateUserCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         
+        $firstName = $input->getArgument('firstName');
+        $lastName = $input->getArgument('lastName');
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
 
         $user = new User();
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
         $user->setEmail($email);
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
 

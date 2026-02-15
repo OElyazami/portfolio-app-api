@@ -29,6 +29,8 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
         return new JsonResponse([
             'user' => [
                 'id' => $user->getId(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
                 'email' => $user->getEmail(),
                 'roles' => $user->getRoles(),
             ],
