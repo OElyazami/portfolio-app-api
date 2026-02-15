@@ -22,15 +22,15 @@ class Skill {
     #[Assert\Length(max: 25)]
     private string $name;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Length(max: 50)]
     private ?string $icon = null;
 
     #[ORM\Column()]
-    private int $yearsOfExperience;
+    private int $yearsOfExperience = 0;
 
     #[ORM\Column()]
-    private bool $isFeatured;
+    private bool $isFeatured = false;
 
     #[ORM\ManyToMany(
         targetEntity: Project::class,
@@ -43,7 +43,7 @@ class Skill {
         targetEntity: User::class,
         inversedBy: 'skills'
     )]
-    private ?User $user;
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -58,20 +58,6 @@ class Skill {
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * Set the value of id
-     *
-     * @param ?int $id
-     *
-     * @return self
-     */
-    public function setId(?int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**

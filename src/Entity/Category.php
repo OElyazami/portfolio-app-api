@@ -31,12 +31,12 @@ class Category {
     #[ORM\Column(length: 10)]
     private string $color;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Assert\Length(max: 50)]
     private ?string $icon = null;
 
     #[ORM\Column()]
-    private bool $isActive;
+    private bool $isActive = true;
 
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'categories')]
     #[ORM\JoinTable(name:'project_category')]
@@ -55,20 +55,6 @@ class Category {
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * Set the value of id
-     *
-     * @param ?int $id
-     *
-     * @return self
-     */
-    public function setId(?int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**

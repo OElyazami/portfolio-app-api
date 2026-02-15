@@ -13,31 +13,31 @@ class Certification {
     #[ORM\Id]
     #[ORM\Column()]
     #[ORM\GeneratedValue]
-    private int $id;
+    private ?int $id = null;
 
     #[ORM\Column]
     #[Assert\NotBlank()]
     #[Assert\Length(
-        min:5
+        min: 5
     )]
     private string $title;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $description;
+    private ?string $description = null;
 
     #[ORM\ManyToOne(
         targetEntity: User::class,
         inversedBy: 'certifications'
     )]
-    private ?User $user;
+    private ?User $user = null;
 
 
     /**
      * Get the value of id
      *
-     * @return int
+     * @return ?int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

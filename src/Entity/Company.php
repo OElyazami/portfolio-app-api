@@ -14,11 +14,12 @@ class Company
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    private ?int $id = null;
 
+    #[ORM\Column(length: 25)]
     #[Assert\NotBlank]
     #[Assert\Length(
-        min: 10,
+        min: 2,
         max: 25
     )]
     private string $title;
@@ -37,13 +38,13 @@ class Company
     #[Assert\Length(
         max: 255
     )]
-    private ?string $logoImage;
+    private ?string $logoImage = null;
 
     #[ORM\ManyToOne(
         targetEntity: User::class,
         inversedBy: 'companies'
     )]
-    private ?User $user;
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -54,9 +55,9 @@ class Company
     /**
      * Get the value of id
      *
-     * @return int
+     * @return ?int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

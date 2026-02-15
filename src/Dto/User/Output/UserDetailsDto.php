@@ -23,24 +23,18 @@ class UserDetailsDto implements DtoInterface
 
     public static function fromEntity(User $user): self
     {
-        if (!$user instanceof User) {
-            throw new \InvalidArgumentException(
-                sprintf('Expected User entity, got "%s"', get_class($user))
-            );
-        }
-
         $userDetails = $user->getUserDetails();
 
         return new self(
-            linkedinUrl: $userDetails->getLinkedinUrl(),
-            githubUrl: $userDetails->getGithubUrl(),
+            linkedinUrl: $userDetails?->getLinkedinUrl(),
+            githubUrl: $userDetails?->getGithubUrl(),
             firstName: $user->getFirstName(),
             lastName: $user->getLastName(),
-            profile: $userDetails->getProfile(),
+            profile: $userDetails?->getProfile(),
             email: $user->getEmail(),
-            address: $userDetails->getAddress(),
-            mobileNumber: $userDetails->getMobileNumber(),
-            landLineNumber: $userDetails->getLandLineNumber()
+            address: $userDetails?->getAddress(),
+            mobileNumber: $userDetails?->getMobileNumber(),
+            landLineNumber: $userDetails?->getLandLineNumber()
         );
     }
 

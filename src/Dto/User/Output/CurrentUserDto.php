@@ -17,12 +17,6 @@ class CurrentUserDto implements DtoInterface {
 
     public static function fromEntity(User $user): self
     {
-        if (!$user instanceof User) {
-            throw new \InvalidArgumentException(
-                sprintf('Expected User entity, got "%s"', get_class($user))
-            );
-        }
-
         return new self(
             firstName: $user->getFirstName(),
             lastName: $user->getLastName(),
@@ -35,7 +29,7 @@ class CurrentUserDto implements DtoInterface {
     {
         return [
             'email' => $this->email,
-            'firstName' => $this->email,
+            'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'avatarImage' => $this->avatarImage
         ];

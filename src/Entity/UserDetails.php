@@ -12,37 +12,36 @@ class UserDetails
     #[ORM\Column]
     #[ORM\Id]
     #[ORM\GeneratedValue()]
-    private int $id;
+    private ?int $id = null;
     
-    #[ORM\Column(type: 'text', nullable: true, length: 255)]
+    #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\Length(
         max: 255
     )]
-    private ?string $address;
+    private ?string $address = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $profile;
+    private ?string $profile = null;
 
     #[ORM\Column(nullable: true)]
-    private ?string $mobileNumber;
-
+    private ?string $mobileNumber = null;
 
     #[ORM\Column(nullable: true)]
-    private ?string $landLineNumber;
+    private ?string $landLineNumber = null;
     
     #[ORM\OneToOne(inversedBy: 'userDetails', targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', unique: true, nullable: false)]
     private User $user;
 
     #[ORM\Column(nullable: true)]
-    private ?string $linkedinUrl;
+    private ?string $linkedinUrl = null;
 
     #[ORM\Column(nullable: true)]
-    private ?string $githubUrl;
+    private ?string $githubUrl = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\Email]
-    private ?string $email;
+    private ?string $email = null;
 
     /**
      * Get the value of address
@@ -142,8 +141,10 @@ class UserDetails
 
     /**
      * Get the value of user
-     */ 
-    public function getUser()
+     *
+     * @return User
+     */
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -151,9 +152,11 @@ class UserDetails
     /**
      * Set the value of user
      *
-     * @return  self
-     */ 
-    public function setUser($user)
+     * @param User $user
+     *
+     * @return self
+     */
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

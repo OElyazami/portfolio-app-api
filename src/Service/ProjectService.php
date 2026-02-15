@@ -107,15 +107,9 @@ class ProjectService
     /**
      * Create a new project from DTO
      */
-    public function createProject(CreateProjectDto $dto): IResponseArrayFormat
+    public function createProject(CreateProjectDto $dto, User $user): IResponseArrayFormat
     {
         try {
-            // Find user
-            $user = $this->em->getRepository(User::class)->find($dto->userId);
-            if (!$user) {
-                return (new ErrorResponse())->setMessage('User not found');
-            }
-            
             // Create project
             $project = new Project();
             $project->setTitle($dto->title)
@@ -471,15 +465,9 @@ class ProjectService
      */
     private function generateSlug(string $title): string
     {
-        // If you have a SluggerService, use it:
-        if (class_exists(SluggerService::class)) {
-            return $this->slugger->slugify($title);
-        }
+        $slug = $this->slugger->slugify($title);
         
-        // Simple slug generation
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-'));
-        
-        // Check if slug exists
+        // Check if slug exists and make unique
         $counter = 1;
         $originalSlug = $slug;
         

@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[ORM\Table(name: 'projects')]
 class Project
 {
@@ -36,13 +37,13 @@ class Project
     #[Assert\Length(
         max: 255
     )]
-    private ?string $featuredImage;
+    private ?string $featuredImage = null;
 
     #[ORM\Column()]
-    private int $years;
+    private int $years = 0;
 
     #[ORM\Column()]
-    private bool $isFeatured;
+    private bool $isFeatured = false;
 
     #[ORM\ManyToMany(
         targetEntity: Category::class,
@@ -65,7 +66,7 @@ class Project
         cascade: ['persist']
     )]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Client $client;
+    private ?Client $client = null;
 
     #[ORM\ManyToOne(
         targetEntity: User::class,
@@ -74,7 +75,7 @@ class Project
     #[ORM\JoinColumn(
         onDelete: 'CASCADE'
     )]
-    private ?User $user;
+    private ?User $user = null;
 
     #[ORM\ManyToMany(
         targetEntity: Skill::class,
@@ -149,8 +150,10 @@ class Project
 
     /**
      * Get the value of description
+     *
+     * @return ?string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -158,9 +161,11 @@ class Project
     /**
      * Set the value of description
      *
-     * @return  self
+     * @param ?string $description
+     *
+     * @return self
      */
-    public function setDescription($description)
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -172,7 +177,7 @@ class Project
      *
      * @return string
      */
-    public function getFeaturedImage(): string
+    public function getFeaturedImage(): ?string
     {
         return $this->featuredImage;
     }
@@ -180,11 +185,11 @@ class Project
     /**
      * Set the value of featuredImage
      *
-     * @param string $featuredImage
+     * @param ?string $featuredImage
      *
      * @return self
      */
-    public function setFeaturedImage(string $featuredImage): self
+    public function setFeaturedImage(?string $featuredImage): self
     {
         $this->featuredImage = $featuredImage;
 
@@ -193,8 +198,10 @@ class Project
 
     /**
      * Get the value of years
+     *
+     * @return int
      */
-    public function getYears()
+    public function getYears(): int
     {
         return $this->years;
     }
@@ -202,9 +209,11 @@ class Project
     /**
      * Set the value of years
      *
-     * @return  self
+     * @param int $years
+     *
+     * @return self
      */
-    public function setYears($years)
+    public function setYears(int $years): self
     {
         $this->years = $years;
 
@@ -337,12 +346,12 @@ class Project
 
     public function addSkill(Skill $skill): self
     {
-        if (!$this->skills->contains($skill)){
-            $this->skills->add($$skill);
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
             $skill->addProject($this);
         }
 
-        return$this;
+        return $this;
     }
 
     public function removeSkill(Skill $skill): self

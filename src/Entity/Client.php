@@ -14,7 +14,7 @@ class Client {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    private ?int $id = null;
 
     #[Assert\NotBlank]
     #[Assert\Length(
@@ -28,8 +28,7 @@ class Client {
     )]
 
     #[ORM\Column(nullable: true)]
-    private ?string $logo_image;
-
+    private ?string $logo_image = null;
 
     #[ORM\OneToMany(
         targetEntity: Project::class,
@@ -45,9 +44,9 @@ class Client {
     /**
      * Get the value of id
      *
-     * @return int
+     * @return ?int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -9,9 +9,9 @@ class ErrorResponse implements IResponseArrayFormat
 
     private int $code = Response::HTTP_INTERNAL_SERVER_ERROR;
 
-    private string $message;
+    private string $message = '';
 
-    private array $errors;
+    private array $errors = [];
 
     public function setCode(int $code): self
     {
@@ -41,7 +41,7 @@ class ErrorResponse implements IResponseArrayFormat
         ];
 
         if ($this->message) {
-            $reponse['messages'] = $this->message;
+            $response['message'] = $this->message;
         }
         if ($this->errors) {
             $response['errors'] = $this->errors;

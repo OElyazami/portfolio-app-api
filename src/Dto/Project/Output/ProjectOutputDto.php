@@ -53,17 +53,15 @@ class ProjectOutputDto implements DtoInterface, JsonSerializable
                 fn($skill) => [
                     'id' => $skill->getId(),
                     'name' => $skill->getName(),
-                    'slug' => $skill->getSlug(),
-                    'icon' => $skill->getIcon()
+                    'icon' => $skill->getIcon(),
+                    'yearsOfExperience' => $skill->getYearsOfExperience()
                 ],
                 $project->getSkills()->toArray()
             ),
             company: $project->getCompany() ? [
-                'id' => $project->getCompany()->getId()
-                // 'name' => $project->getCompany()->getName(),
-                // 'slug' => $project->getCompany()->getSlug(),
-                // 'logo' => $project->getCompany()->getLogo(),
-                // 'website' => $project->getCompany()->getWebsite()
+                'id' => $project->getCompany()->getId(),
+                'title' => $project->getCompany()->getTitle(),
+                'logoImage' => $project->getCompany()->getLogoImage()
             ] : null,
             client: $project->getClient() ? [
                 'id' => $project->getClient()->getId(),

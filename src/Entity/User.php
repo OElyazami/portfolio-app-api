@@ -80,13 +80,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $companies;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private ?UserDetails $userDetails;
+    private ?UserDetails $userDetails = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->roles = ['ROLE_USER'];
         $this->projects = new ArrayCollection();
+        $this->certifications = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->companies = new ArrayCollection();
     }
@@ -268,7 +269,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeskill(Skill $skill): self
+    public function removeSkill(Skill $skill): self
     {
         if ($this->skills->contains($skill)) {
             $this->skills->removeElement($skill);
