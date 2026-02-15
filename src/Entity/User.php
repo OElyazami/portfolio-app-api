@@ -32,16 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
-    private ?string $firstName = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
-    private ?string $lastName = null;
-
     #[ORM\Column]
-
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -80,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $companies;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private ?UserDetails $userDetails = null;
+    private ?Profile $profile = null;
 
     public function __construct()
     {
@@ -143,30 +134,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(?string $firstName): static
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): static
-    {
-        $this->lastName = $lastName;
 
         return $this;
     }
@@ -309,25 +276,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Get the value of userDetails
+     * Get the value of profile
      *
-     * @return ?UserDetails
+     * @return ?Profile
      */
-    public function getUserDetails(): ?UserDetails
+    public function getProfile(): ?Profile
     {
-        return $this->userDetails;
+        return $this->profile;
     }
 
     /**
-     * Set the value of userDetails
+     * Set the value of profile
      *
-     * @param ?UserDetails $userDetails
+     * @param ?Profile $profile
      *
      * @return self
      */
-    public function setUserDetails(?UserDetails $userDetails): self
+    public function setProfile(?Profile $profile): self
     {
-        $this->userDetails = $userDetails;
+        $this->profile = $profile;
 
         return $this;
     }

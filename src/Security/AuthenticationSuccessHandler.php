@@ -30,8 +30,6 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
             'user' => [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
-                'firstName' => $user->getFirstName(),
-                'lastName' => $user->getLastName(),
                 'roles' => $user->getRoles(),
             ],
             'access_token' => $tokenData['token'],

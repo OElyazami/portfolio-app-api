@@ -69,10 +69,10 @@ class ProjectOutputDto implements DtoInterface, JsonSerializable
             ] : null,
             user: [
                 'id' => $project->getUser()->getId(),
-                'firstName' => $project->getUser()->getFirstName(),
-                'lastName' => $project->getUser()->getLastName(),
                 'email' => $project->getUser()->getEmail(),
-                'avatar' => ''
+                'firstName' => $project->getUser()->getProfile()?->getFirstName(),
+                'lastName' => $project->getUser()->getProfile()?->getLastName(),
+                'avatar' => $project->getUser()->getProfile()?->getAvatarImage()
             ]
             // createdAt: $project->getCreatedAt()->format('Y-m-d H:i:s'),
             // updatedAt: $project->getUpdatedAt()->format('Y-m-d H:i:s')

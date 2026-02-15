@@ -29,9 +29,7 @@ class CreateUserCommand extends Command
     {
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'User email')
-            ->addArgument('password', InputArgument::REQUIRED, 'User password')
-            ->addArgument('firstName', InputArgument::OPTIONAL, 'User first name')
-            ->addArgument('lastName', InputArgument::OPTIONAL, 'User last name');
+            ->addArgument('password', InputArgument::REQUIRED, 'User password');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,20 +38,10 @@ class CreateUserCommand extends Command
         
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
-        $firstName = $input->getArgument('firstName');
-        $lastName = $input->getArgument('lastName');
 
         $user = new User();
         $user->setEmail($email);
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
-        
-        if ($firstName) {
-            $user->setFirstName($firstName);
-        }
-        
-        if ($lastName) {
-            $user->setLastName($lastName);
-        }
 
         // First user becomes admin
         $userCount = $this->entityManager->getRepository(User::class)->count([]);
